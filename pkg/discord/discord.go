@@ -2,6 +2,7 @@ package discord
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/vectorhacker/reddit-discord-bot/pkg/reddit"
 )
@@ -22,7 +23,13 @@ func (d DiscordInteraction) ThreadRedditPosts(posts []reddit.Post) error {
 
 	errs := []error{}
 	for _, post := range posts {
-		err := d.threader.CreateThread(d.channelId, post.Title, post.Text)
+		message := fmt.Sprintf(
+			"%s\n\n%s\n\n%s",
+			post.Title,
+			post.Text[:min(len(post.Text), 1000)],
+			post.URL,
+		)
+		err := d.threader.CreateThread(d.channelId, post.Title, message)
 		errs = append(errs, err)
 	}
 

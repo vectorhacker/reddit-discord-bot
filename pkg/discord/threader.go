@@ -14,6 +14,12 @@ type DiscordGoThreader struct {
 	session *discordgo.Session
 }
 
+func NewDiscordGoThreader(session *discordgo.Session) *DiscordGoThreader {
+	return &DiscordGoThreader{
+		session,
+	}
+}
+
 func (d *DiscordGoThreader) CreateThread(
 	channel string,
 	title string,
