@@ -3,6 +3,7 @@ package reddit
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -47,11 +48,12 @@ type ScrapeSubredditFunc func(
 func ScrapeSubreddit(
 	sub string,
 	sorting ScrapeSorting,
+	after string,
 ) (*ScrapeSubredditResult, error) {
 
 	result := ScrapeSubredditResult{}
 
-	response, err := http.Get(fmt.Sprintf("https://www.reddit.com/r/%s/%s/.json", sub, sorting))
+	response, err := http.Get(fmt.Sprintf("https://www.reddit.com/r/%s/%s/.json?after=%s", sub, sorting, after))
 
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve reddit page: %w", err)
@@ -90,7 +92,12 @@ func ScrapeSubreddit(
 			Text:        child.Data.Selftext,
 			Preview:     preview,
 		})
+
 	}
+
+	result.After = data.Data.After
+	result.Before = data.Data.Before
+	log.Printf("After: %s", result.After)
 
 	return &result, nil
 }

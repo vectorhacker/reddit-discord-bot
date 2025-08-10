@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
@@ -22,7 +23,7 @@ func main() {
 
 	session, err := discordgo.New("Bot " + token)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Cannot create bot session: %v", err)
 	}
 
 	threader := discord.NewDiscordGoThreader(session)
@@ -31,13 +32,16 @@ func main() {
 		channelId,
 	)
 
-	p := posts.New(
+	p, err := posts.New(
 		interaction,
 		subreddit,
-		reddit.Top,
+		reddit.Best,
 	)
+	if err != nil {
+		log.Fatalf("Cannot create posts: %v", err)
+	}
 
 	if err := p.Run(); err != nil {
-		panic(err)
+		log.Fatalf("Failure to run: %v", err)
 	}
 }

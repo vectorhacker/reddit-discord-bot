@@ -37,7 +37,7 @@ func TestThreadingPosts(t *testing.T) {
 		t:         t,
 		channelId: channelId,
 	}
-	scrape, _ := reddit.ScrapeSubreddit("omscs", reddit.Best)
+	scrape, _ := reddit.ScrapeSubreddit("omscs", reddit.Best, "")
 
 	interaction := discord.NewInteraction(threader, channelId)
 

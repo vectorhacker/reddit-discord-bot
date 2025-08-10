@@ -21,7 +21,7 @@ func TestScrapeReddit(t *testing.T) {
 	for _, test := range tests {
 		t.Run(string(test.sorting), func(t *testing.T) {
 			t.Parallel()
-			result, err := reddit.ScrapeSubreddit("artificial", test.sorting)
+			result, err := reddit.ScrapeSubreddit("artificial", test.sorting, "")
 			if err != nil {
 				t.Fatalf("Expected no error, got %v", err)
 			}

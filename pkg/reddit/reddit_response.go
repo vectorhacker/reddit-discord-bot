@@ -12,12 +12,12 @@ type RedditResponse struct {
 
 // ListingData represents the data field of a Reddit listing
 type ListingData struct {
-	After     *string `json:"after"`
+	After     string  `json:"after"`
 	Dist      int     `json:"dist"`
 	Modhash   string  `json:"modhash"`
 	GeoFilter string  `json:"geo_filter"`
 	Children  []Child `json:"children"`
-	Before    *string `json:"before"`
+	Before    string  `json:"before"`
 }
 
 // Child represents individual posts in the listing
