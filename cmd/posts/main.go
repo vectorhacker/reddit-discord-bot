@@ -34,7 +34,7 @@ func main() {
 	p := posts.New(
 		interaction,
 		subreddit,
-		reddit.New,
+		reddit.Top,
 	)
 
 	if err := p.Run(); err != nil {

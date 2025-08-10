@@ -3,6 +3,7 @@ package discord
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/vectorhacker/reddit-discord-bot/pkg/reddit"
 )
@@ -23,10 +24,12 @@ func (d DiscordInteraction) ThreadRedditPosts(posts []reddit.Post) error {
 
 	errs := []error{}
 	for _, post := range posts {
+		content := truncatePost(post)
+
 		message := fmt.Sprintf(
 			"%s\n\n%s\n\n%s",
 			post.Title,
-			post.Text[:min(len(post.Text), 1000)],
+			content,
 			post.URL,
 		)
 		err := d.threader.CreateThread(d.channelId, post.Title, message)
@@ -34,4 +37,13 @@ func (d DiscordInteraction) ThreadRedditPosts(posts []reddit.Post) error {
 	}
 
 	return errors.Join(errs...)
+}
+
+func truncatePost(post reddit.Post) string {
+	content := post.Text[:min(len(post.Text), 1000)]
+	content = strings.TrimSpace(content)
+	if len(content) < len(post.Text) {
+		content += "..."
+	}
+	return content
 }
